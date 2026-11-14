@@ -1,0 +1,33 @@
+name: Diagnostico del APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/diagnose.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bajar el ultimo APK arm64
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download --repo "$GITHUB_REPOSITORY" -p "Calix-TV-arm64.apk" -O test.apk
+      - name: Herramientas oficiales de Android
+        run: |
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          echo "build-tools: $BT"
+          ls -la test.apk
+          echo "=== aapt2 dump badging ==="
+          "$BT/aapt2" dump badging test.apk 2>&1 | head -60 || true
+          echo "=== apksigner verify ==="
+          "$BT/apksigner" verify --verbose --print-certs test.apk 2>&1 | head -30 || true
+          echo "=== zipalign (4 bytes y 16 KB) ==="
+          "$BT/zipalign" -c -v 4 test.apk 2>&1 | tail -3 || true
+          "$BT/zipalign" -c -P 16 -v 4 test.apk 2>&1 | grep -v "OK" | head -15 || true
+          echo "=== aapt2 dump permissions / xmltree ==="
+          "$BT/aapt2" dump xmltree --file AndroidManifest.xml test.apk 2>&1 | head -80 || true
