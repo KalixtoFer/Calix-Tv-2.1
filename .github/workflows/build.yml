@@ -1,0 +1,58 @@
+name: Calix TV - Compilar APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # para publicar el APK como Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: android-native
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      # Kit nativo (NDK): sin el, las librerias nativas salen con simbolos de depuracion (APK mucho mas pesado)
+      - name: Instalar NDK
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;27.1.12297006" > /dev/null
+      # Se reutiliza siempre la misma clave de depuracion (cache): cada APK se instala sobre el anterior
+      - name: Clave de firma estable (cache)
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: calix2-debug-keystore-v1
+      - name: Compilar APK (release)
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleRelease --console=plain
+      - name: Preparar archivos
+        working-directory: ${{ github.workspace }}
+        run: |
+          OUT="android-native/app/build/outputs/apk/release"
+          ls -1 "$OUT"
+          mkdir -p dist
+          UNI=$(ls "$OUT"/*universal*-release.apk 2>/dev/null | head -1)
+          [ -z "$UNI" ] && UNI=$(ls "$OUT"/*.apk | head -1)
+          cp "$UNI" "dist/Calix-TV-2.1.${{ github.run_number }}.apk"
+          cp "$UNI" dist/Calix-TV.apk
+      # Release con nombre fijo: releases/latest/download/Calix-TV.apk siempre es la ultima version
+      - name: Publicar Release
+        working-directory: ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          N=${{ github.run_number }}
+          gh release create "v2.1.$N" "dist/Calix-TV-2.1.$N.apk" dist/Calix-TV.apk --target "$GITHUB_SHA" --title "Calix TV 2.1.$N" --notes "Compilacion automatica del commit ${GITHUB_SHA::7}" --latest
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Calix-TV-APK
+          path: dist/*.apk
