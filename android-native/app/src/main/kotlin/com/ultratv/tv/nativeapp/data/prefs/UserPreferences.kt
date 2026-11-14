@@ -85,7 +85,7 @@ data class UserPrefs(
      *  silently. Defaults to true because the app surfaces this in Settings
      *  and the diagnostic flow is what keeps the redesign honest; flipping
      *  it off stops the dashboard cold for that install. */
-    val telemetryEnabled: Boolean = true,
+    val telemetryEnabled: Boolean = false,
     /** Partage des langues et catégories affichées avec les autres appareils du compte cloud. */
     val syncDisplayPrefs: Boolean = true,
 

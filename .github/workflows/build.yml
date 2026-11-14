@@ -30,6 +30,10 @@ jobs:
         with:
           path: ~/.android/debug.keystore
           key: calix2-debug-keystore-v1
+      # Version = 2.1.<numero de compilacion>: asi cada APK es mas nuevo que el anterior y el actualizador integrado funciona
+      - name: Fijar version
+        working-directory: ${{ github.workspace }}
+        run: echo "2.1.${{ github.run_number }}" > VERSION
       - name: Compilar APK (release)
         run: |
           chmod +x gradlew

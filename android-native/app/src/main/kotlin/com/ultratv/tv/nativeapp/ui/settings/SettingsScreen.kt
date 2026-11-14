@@ -825,7 +825,7 @@ private fun AboutPane(vm: SettingsViewModel, panes: SettingsPanesViewModel, app:
     PaneTitle(D.rubAbout, D.setDescAbout)
     SettingsCard {
         // Dons (Ko-fi) : en tête de la rubrique, discret (une ligne comme les autres).
-        SupportRow(D)
+        // Calix TV: sin enlace de donaciones del proyecto original
         PrefRow(D.version, com.ultratv.tv.nativeapp.BuildConfig.VERSION_NAME) { }
         PrefRow(D.checkUpdates, msg.orEmpty()) {
             scope.launch {

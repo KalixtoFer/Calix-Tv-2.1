@@ -76,7 +76,7 @@ object RemoteLog {
 
     /** Mirrors UserPrefs.telemetryEnabled; toggled at runtime from Settings.
      *  Defaults to true so the dashboard keeps catching crashes out of the box. */
-    @Volatile var telemetryEnabled: Boolean = true
+    @Volatile var telemetryEnabled: Boolean = false
 
     private fun sanitize(input: String): String = LogSanitizer.sanitize(input)
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Polonais (pl) : PREMIER JET, à relire via Weblate (https://hosted.weblate.org/projects/ultra-tv/). Source : values/ (anglais). -->
 <resources>
-    <string name="app_name">UTV</string>
+    <string name="app_name">Calix TV</string>
     <string name="nav_home">Start</string>
     <string name="nav_live">Na żywo</string>
     <string name="nav_settings">Ustawienia</string>
@@ -117,8 +117,8 @@
     <string name="ds_update_default_body">Dostępna jest nowa wersja. Pobrany plik jest weryfikowany przed instalacją.</string>
     <string name="ds_update_whats_new">Co nowego</string>
     <string name="ds_update_failed">Nie udało się zainstalować aktualizacji. Spróbuj ponownie później.</string>
-    <string name="ds_update_signature_mismatch">Ta wersja jest podpisana nowym kluczem: Android odrzuci ją jako aktualizację. Odinstaluj Ultra TV jednorazowo, a następnie zainstaluj najnowszą wersję (ultratv.dpdns.org/apk ; Downloader: kod 5189921). Kolejne aktualizacje będą instalowane normalnie.</string>
-    <string name="ds_update_launched">Otwarto instalator Androida. Jeśli zgłosi konflikt, odinstaluj Ultra TV, a następnie zainstaluj najnowszą wersję (ultratv.dpdns.org/apk ; Downloader: kod 5189921).</string>
+    <string name="ds_update_signature_mismatch">Ta wersja jest podpisana nowym kluczem: Android odrzuci ją jako aktualizację. Odinstaluj Calix TV jednorazowo, a następnie zainstaluj najnowszą wersję (ultratv.dpdns.org/apk ; Downloader: kod 5189921). Kolejne aktualizacje będą instalowane normalnie.</string>
+    <string name="ds_update_launched">Otwarto instalator Androida. Jeśli zgłosi konflikt, odinstaluj Calix TV, a następnie zainstaluj najnowszą wersję (ultratv.dpdns.org/apk ; Downloader: kod 5189921).</string>
     <string name="ds_offline_title">Brak połączenia z internetem</string>
     <string name="ds_offline_body">Ulubione, wczytany już przewodnik i nagrania pozostają dostępne. Telewizja na żywo wznowi się, gdy tylko wróci sieć.</string>
     <string name="ds_offline_banner">Brak połączenia z internetem — zapisane treści pozostają dostępne.</string>
@@ -686,7 +686,7 @@
     <string name="remote_remote_step1">Połącz telefon z tą samą siecią Wi-Fi co to urządzenie</string>
     <string name="remote_remote_step2">Zeskanuj kod QR lub otwórz %1$s (łącze zawiera prywatny klucz)</string>
     <string name="remote_remote_step3">Wyszukaj, dotknij wyniku, aby otworzyć go tutaj, i użyj paska pilota</string>
-    <string name="remote_remote_only_foreground">Działa tylko wtedy, gdy Ultra TV jest na ekranie. Nic nie opuszcza Twojej sieci lokalnej.</string>
+    <string name="remote_remote_only_foreground">Działa tylko wtedy, gdy Calix TV jest na ekranie. Nic nie opuszcza Twojej sieci lokalnej.</string>
     <string name="remote_remote_enable">Włącz</string>
     <string name="remote_remote_disable">Wyłącz</string>
     <string name="remote_remote_new_key">Nowy klucz</string>
@@ -977,7 +977,7 @@
     <string name="dl_wifi_only">Pobieraj tylko przez Wi-Fi</string>
     <string name="dl_wifi_only_hint">Pobieranie czeka na sieć bez limitu danych</string>
     <string name="dl_location">Miejsce pobierania</string>
-    <string name="dl_location_hint">Pliki pozostają prywatne dla Ultra TV</string>
+    <string name="dl_location_hint">Pliki pozostają prywatne dla Calix TV</string>
     <string name="dl_location_external">Pamięć aplikacji (zewnętrzna)</string>
     <string name="dl_location_internal">Pamięć wewnętrzna</string>
     <string name="dl_notif_channel">Pobrane</string>
@@ -1123,7 +1123,7 @@
     <string name="str_nav_recordings">Nagrania</string>
     <string name="str_nav_settings">Ustawienia</string>
     <string name="str_nav_account">Subskrypcja</string>
-    <string name="str_home_welcome">Witaj w Ultra TV</string>
+    <string name="str_home_welcome">Witaj w Calix TV</string>
     <string name="str_home_subtitle">Wersja natywna · obsługa pilota</string>
     <string name="str_home_continue_watching">Kontynuuj oglądanie</string>
     <string name="str_home_recently_watched">Ostatnio oglądane</string>
@@ -1159,11 +1159,11 @@
     <string name="str_categories_show">Pokaż</string>
     <string name="str_categories_hide">Ukryj</string>
     <string name="str_categories_count_template">Razem: %1$d · widocznych: %2$d · ukrytych: %3$d</string>
-    <string name="str_wizard_welcome_title">👋 Witaj w Ultra TV</string>
+    <string name="str_wizard_welcome_title">👋 Witaj w Calix TV</string>
     <string name="str_wizard_add_provider_title">📡 Dodaj dostawcę</string>
     <string name="str_wizard_done_title">🎉 Wszystko gotowe</string>
     <string name="str_wizard_step_template">Krok %1$d / %2$d</string>
-    <string name="str_wizard_intro1">Ultra TV to natywny klient IPTV dla Android TV. Obsługuje Xtream Codes, M3U / M3U8 oraz pliki M3U z pamięci lokalnej.</string>
+    <string name="str_wizard_intro1">Calix TV to natywny klient IPTV dla Android TV. Obsługuje Xtream Codes, M3U / M3U8 oraz pliki M3U z pamięci lokalnej.</string>
     <string name="str_wizard_intro2">Interfejs korzysta z Compose-TV, odtwarzanie z Media3 / ExoPlayer, katalog z Room. Nawigacja pilotem działa od razu.</string>
     <string name="str_wizard_two_paths">Dwa sposoby:</string>
     <string name="str_wizard_path_manual">• Ustawienia → +Xtream / +adres M3U / +plik M3U. Wypełnij formularz.</string>
@@ -1247,7 +1247,7 @@
     <string name="str_pref_auto_play_next">Autoodtwarzanie następnego odcinka</string>
     <string name="str_pref_auto_play_next_hint">Automatycznie odtwarza następny odcinek po zakończeniu poprzedniego.</string>
     <string name="str_pref_launch_at_boot">Uruchamiaj przy starcie telewizora</string>
-    <string name="str_pref_launch_at_boot_hint">Otwiera Ultra TV automatycznie po uruchomieniu dekodera.</string>
+    <string name="str_pref_launch_at_boot_hint">Otwiera Calix TV automatycznie po uruchomieniu dekodera.</string>
     <string name="str_pref_auto_play_last">Autoodtwarzanie ostatnio oglądanego przy starcie</string>
     <string name="str_pref_auto_play_last_hint">Wznawia ostatni kanał / film / odcinek po uruchomieniu aplikacji.</string>
     <string name="str_pref_interval_launch">Przy każdym uruchomieniu</string>
@@ -1353,8 +1353,8 @@
     <string name="wiz_step_source">Źródło</string>
     <string name="wiz_step_ready">Gotowe</string>
     <string name="wiz_step_label">KROK %d Z 3</string>
-    <string name="wiz_welcome_title">Witaj w Ultra TV</string>
-    <string name="wiz_welcome_tagline">Twoje kanały, filmy i seriale w jednym miejscu. Dodaj źródło, a resztą zajmie się Ultra TV.</string>
+    <string name="wiz_welcome_title">Witaj w Calix TV</string>
+    <string name="wiz_welcome_tagline">Twoje kanały, filmy i seriale w jednym miejscu. Dodaj źródło, a resztą zajmie się Calix TV.</string>
     <string name="wiz_bullet_m3u">Listy M3U / M3U8, online lub jako plik</string>
     <string name="wiz_start">Zaczynamy</string>
     <string name="wiz_skip">Pomiń na razie</string>
@@ -1451,7 +1451,7 @@
     <string name="mob_from_cloud">Z chmury</string>
     <string name="mob_open_dashboard">Otwórz panel</string>
     <string name="mob_dashboard_address">Adres panelu</string>
-    <string name="translate_help">Pomóż w tłumaczeniu Ultra TV</string>
+    <string name="translate_help">Pomóż w tłumaczeniu Calix TV</string>
     <string name="translate_help_sub">Brakuje Twojego języka lub jest w nim błąd?</string>
     <string name="translate_help_scan">Zeskanuj kod QR telefonem, aby tłumaczyć w przeglądarce.</string>
     <string name="translate_help_close">Zamknij</string>
@@ -1590,7 +1590,7 @@
     <string name="ds_rec_single_connection">Jedno połączenie: dostawca może odrzucić nagrywanie lub przerwać odtwarzanie.</string>
     <string name="shortcuts_title">Skróty</string>
     <string name="shortcuts_hint">Sekcje dolnego paska. Dotknij, aby zmienić, ▲ ▼, aby przesunąć.</string>
-    <string name="support_title">Wesprzyj Ultra TV</string>
+    <string name="support_title">Wesprzyj Calix TV</string>
     <string name="support_sub">Darmowe i bez reklam: darowizna pomaga opłacić serwery.</string>
     <string name="support_scan">Zeskanuj kod QR telefonem, aby wesprzeć przez Ko-fi (karta lub PayPal).</string>
     <string name="simple_back_full">Wróć do pełnego trybu</string>
@@ -1603,6 +1603,6 @@
     <string name="cat_channel_shown">Widoczny</string>
     <string name="cat_channel_hidden">Ukryty</string>
     <string name="cat_order_hint">▸ Kolejność · Kanały</string>
-    <string name="back_hold_to_exit">Przytrzymaj Wstecz, aby zamknąć Ultra TV</string>
-    <string name="back_again_to_exit">Naciśnij ponownie Wstecz, aby zamknąć Ultra TV</string>
+    <string name="back_hold_to_exit">Przytrzymaj Wstecz, aby zamknąć Calix TV</string>
+    <string name="back_again_to_exit">Naciśnij ponownie Wstecz, aby zamknąć Calix TV</string>
 </resources>

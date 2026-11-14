@@ -51,7 +51,7 @@ fun resolveBuildConfigValue(name: String, default: String): String =
 
 val ultraWorkerUrl = resolveBuildConfigValue(
     "ULTRA_WORKER_URL",
-    resolveBuildConfigValue("ULTRA_LOG_URL", "https://tv.weedy.dpdns.org"),
+    resolveBuildConfigValue("ULTRA_LOG_URL", ""),
 )
 
 // Édition : « standard » (app publique) ou « pro » (variante revendeur : -PULTRA_EDITION=pro).
@@ -67,7 +67,7 @@ android {
     defaultConfig {
         // Different applicationId during development so it can be installed
         // alongside the existing Capacitor build (com.ultratv.tv).
-        applicationId = "com.ultratv.tv.nativeapp"
+        applicationId = "com.calixtv.tv"
         minSdk = 28
         targetSdk = 35
         versionCode = appVersionCode
@@ -77,7 +77,7 @@ android {
         // URL par défaut du Worker — voir resolveBuildConfigValue() ci-dessus.
         buildConfigField("String", "WORKER_URL", "\"$ultraWorkerUrl\"")
         // Adresse de repli (ancienne, workers.dev) : utilisée automatiquement si le domaine principal est injoignable.
-        buildConfigField("String", "WORKER_FALLBACK_URL", "\"https://ultratv-config.khalilbenaz.workers.dev\"")
+        buildConfigField("String", "WORKER_FALLBACK_URL", "\"\"")
         // Édition déclarée au tableau de bord du compte (en-tête X-Ultra-Edition) ; « pro » dans la variante revendeur.
         buildConfigField("String", "EDITION", "\"$ultraEdition\"")
     }

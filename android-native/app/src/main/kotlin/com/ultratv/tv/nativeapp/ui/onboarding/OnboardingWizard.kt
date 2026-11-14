@@ -90,6 +90,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -111,6 +112,7 @@ class OnboardingViewModel @Inject constructor(
     private val movieDao: MovieDao,
     private val seriesDao: SeriesDao,
     private val sync: com.ultratv.tv.nativeapp.data.sync.SyncCoordinator,
+    private val http: okhttp3.OkHttpClient,
     bus: SyncStatusBus,
 ) : ViewModel() {
 
@@ -122,9 +124,36 @@ class OnboardingViewModel @Inject constructor(
      * `null` tant que DataStore et Room n'ont pas répondu : ni l'assistant ni l'application ne
      * sont alors affichés (pas de clignotement, pas d'accueil composé derrière l'assistant).
      */
-    val show: StateFlow<Boolean?> = combine(prefs.flow, provider.observeProviders(), started) { p, ps, st ->
-        shouldShowOnboarding(p.hasSeenOnboarding, ps.size, st)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+    // Calix TV: the login is shown whenever there is no account (also after signing out), nothing else.
+    val show: StateFlow<Boolean?> = provider.observeProviders().map { ps -> ps.isEmpty() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
+    private val _login = MutableStateFlow<LoginState>(LoginState.Idle)
+    val login: StateFlow<LoginState> = _login
+
+    /** Checks the user and password against the fixed Calix TV server, then saves the account and starts the first sync. */
+    fun login(user: String, pass: String) {
+        if (_login.value is LoginState.Busy) return
+        val u = user.trim()
+        if (u.isEmpty() || pass.isEmpty()) { _login.value = LoginState.Error("Ingresá tu usuario y contraseña."); return }
+        _login.value = LoginState.Busy
+        viewModelScope.launch {
+            val r = withContext(Dispatchers.IO) { CalixAuth.check(http, CALIX_SERVER, u, pass) }
+            when (r) {
+                AuthResult.OK -> {
+                    runCatching {
+                        val id = provider.addXtream("Calix TV", CALIX_SERVER, u, pass)
+                        provider.setDefault(id)
+                        sync.request(id, force = true)
+                        prefs.markOnboardingSeen()
+                    }.onFailure { _login.value = LoginState.Error("No se pudo guardar la cuenta. Probá de nuevo."); return@launch }
+                    _login.value = LoginState.Idle
+                }
+                AuthResult.REJECTED -> _login.value = LoginState.Error("Usuario o contraseña incorrectos.")
+                AuthResult.UNREACHABLE -> _login.value = LoginState.Error("No se pudo conectar con el servidor. Revisá tu internet y probá de nuevo.")
+            }
+        }
+    }
 
     val summary: StateFlow<SourceSummary?> = provider.observeProviders().flatMapLatest { ps ->
         val p = ps.lastOrNull() ?: return@flatMapLatest flowOf(null)
@@ -162,7 +191,7 @@ internal fun sourceOptions(touch: Boolean): List<SourceOption> = buildList {
 }
 
 @Composable
-fun OnboardingWizard(
+fun OnboardingWizardLegacy(
     onOpenSettings: () -> Unit,
     vm: OnboardingViewModel = hiltViewModel(),
 ) {
