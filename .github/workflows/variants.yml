@@ -1,0 +1,64 @@
+name: Variantes de prueba (instalacion)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/variants.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  prep:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Crear release de pruebas
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view pruebas --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
+            gh release create pruebas --repo "$GITHUB_REPOSITORY" --prerelease --title "Pruebas de instalacion" --notes "APK de prueba: cada uno cambia una cosa del paquete"
+
+  build:
+    needs: prep
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [A, B, C]
+    defaults:
+      run:
+        working-directory: android-native
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Instalar NDK
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;27.1.12297006" > /dev/null
+      - name: Aplicar variante ${{ matrix.variant }}
+        run: |
+          F=app/build.gradle.kts
+          # Todas: sin el sufijo ".debug" en el id del paquete (com.calixtv.tv)
+          sed -i '/applicationIdSuffix = ".debug"/d' $F
+          if [ "${{ matrix.variant }}" = "B" ]; then
+            sed -i 's/isMinifyEnabled = true/isMinifyEnabled = false/; s/isShrinkResources = true/isShrinkResources = false/' $F
+          fi
+          if [ "${{ matrix.variant }}" = "C" ]; then
+            sed -i 's/targetSdk = 35/targetSdk = 34/' $F
+          fi
+          grep -n "applicationId\|targetSdk\|isMinifyEnabled" $F | head
+      - name: Compilar
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleRelease --console=plain
+      - name: Publicar APK de prueba
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          A=$(ls app/build/outputs/apk/release/*arm64-v8a*-release.apk | head -1)
+          cp "$A" "Calix-TV-prueba-${{ matrix.variant }}.apk"
+          gh release upload pruebas "Calix-TV-prueba-${{ matrix.variant }}.apk" --repo "$GITHUB_REPOSITORY" --clobber
