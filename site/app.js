@@ -1,0 +1,16 @@
+(function () {
+  var root = document.documentElement;
+  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  var theme = get("theme");
+  if (theme) root.dataset.theme = theme;
+  document.getElementById("theme").addEventListener("click", function () {
+    var dark = root.dataset.theme ? root.dataset.theme === "dark" : !matchMedia("(prefers-color-scheme: light)").matches;
+    var next = dark ? "light" : "dark"; root.dataset.theme = next; set("theme", next);
+  });
+  // Dernière version publiée (repli : le lien « latest » fonctionne sans cette requête).
+  fetch("https://api.github.com/repos/vantaflow/ultra-tv/releases/latest").then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+    if (!j || !j.tag_name) return;
+    document.querySelectorAll("[data-version]").forEach(function (n) { n.textContent = j.tag_name; });
+  }).catch(function () {});
+})();
