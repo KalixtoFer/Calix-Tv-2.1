@@ -38,6 +38,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew --no-daemon assembleRelease --console=plain
+      # Version "debug": formato estandar de Android, para comparar si el APK de release falla al instalar
+      - name: Compilar APK (debug)
+        run: ./gradlew --no-daemon assembleDebug --console=plain
       - name: Preparar archivos
         working-directory: ${{ github.workspace }}
         run: |
@@ -48,6 +51,8 @@ jobs:
           [ -z "$UNI" ] && UNI=$(ls "$OUT"/*.apk | head -1)
           cp "$UNI" "dist/Calix-TV-2.1.${{ github.run_number }}.apk"
           cp "$UNI" dist/Calix-TV.apk
+          D=$(ls android-native/app/build/outputs/apk/debug/*.apk 2>/dev/null | head -1)
+          if [ -n "$D" ]; then cp "$D" dist/Calix-TV-debug.apk; fi
           # Solo para celulares y TV de 64 bits (la mayoria): mas liviano
           A64=$(ls "$OUT"/*arm64-v8a*-release.apk 2>/dev/null | head -1)
           if [ -n "$A64" ]; then cp "$A64" dist/Calix-TV-arm64.apk; fi
@@ -58,7 +63,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           N=${{ github.run_number }}
-          gh release create "v2.1.$N" "dist/Calix-TV-2.1.$N.apk" dist/Calix-TV.apk $(ls dist/Calix-TV-arm64.apk 2>/dev/null) --target "$GITHUB_SHA" --title "Calix TV 2.1.$N" --notes "Compilacion automatica del commit ${GITHUB_SHA::7}" --latest
+          gh release create "v2.1.$N" "dist/Calix-TV-2.1.$N.apk" dist/Calix-TV.apk $(ls dist/Calix-TV-arm64.apk dist/Calix-TV-debug.apk 2>/dev/null) --target "$GITHUB_SHA" --title "Calix TV 2.1.$N" --notes "Compilacion automatica del commit ${GITHUB_SHA::7}" --latest
       - uses: actions/upload-artifact@v4
         with:
           name: Calix-TV-APK
