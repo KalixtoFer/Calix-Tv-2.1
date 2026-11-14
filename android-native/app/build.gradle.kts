@@ -94,6 +94,12 @@ android {
     // proof-of-rotation signing block, allowing it to install over the
     // existing debug-key install without "INSTALL_FAILED_UPDATE_INCOMPATIBLE".
     signingConfigs {
+        // Calix TV: the APK is signed with the classic (v1) scheme too, for installers that are picky about v2-only packages.
+        getByName("debug") {
+            enableV1Signing = true
+            enableV2Signing = true
+            enableV3Signing = true
+        }
         if (sharedKeystore != null) create("shared") {
             storeFile = sharedKeystore
             storePassword = sharedSigning.getProperty("storePassword")
